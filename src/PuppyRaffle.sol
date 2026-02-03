@@ -82,6 +82,9 @@ contract PuppyRaffle is ERC721, Ownable {
             players.push(newPlayers[i]);
         }
 
+
+
+        
         // Check for duplicates
         for (uint256 i = 0; i < players.length - 1; i++) {
             for (uint256 j = i + 1; j < players.length; j++) {
@@ -90,6 +93,29 @@ contract PuppyRaffle is ERC721, Ownable {
         }
         emit RaffleEnter(newPlayers);
     }
+    //audit
+//This approach is very inefficient and creates a security vulnerability called a Denial of Service (DoS) attack:
+
+// Why It's Bad:
+// Gas Cost Explosion: The more players, the more comparisons needed
+// 10 players = 45 comparisons
+// 100 players = 4,950 comparisons
+// 1,000 players = 499,500 comparisons! 💸
+// This follows an O(n²) complexity pattern (very slow)
+// Attack Scenario:
+// An attacker could enter many players, making the function so expensive that:
+
+// New players can't afford the gas to enter
+// The raffle becomes unusable
+// Players' funds get stuck
+// Better Approach:
+// Use a mapping to track duplicates in O(n) time:
+// mapping(address => bool) hasEntered;
+// for (uint256 i = 0; i < newPlayers.length; i++) {
+//     require(!hasEntered[newPlayers[i]], "Duplicate player");
+//     hasEntered[newPlayers[i]] = true;
+//     players.push(newPlayers[i]);
+// }
 
     /// @param playerIndex the index of the player to refund. You can find it externally by calling `getActivePlayerIndex`
     /// @dev This function will allow there to be blank spots in the array

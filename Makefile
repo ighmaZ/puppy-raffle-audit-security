@@ -17,6 +17,7 @@ install :; rm -rf lib/forge-std lib/openzeppelin-contracts lib/base64 && \
 	cd lib/forge-std && git submodule update --init --recursive && cd ../.. && \
 	git clone --depth 1 --branch v3.4.0 https://github.com/OpenZeppelin/openzeppelin-contracts.git lib/openzeppelin-contracts && \
 	forge install Brechtpd/base64 --no-git
+install :; forge install foundry-rs/forge-std@v1.3.0 && forge install openzeppelin/openzeppelin-contracts@v3.4.0 && forge install Brechtpd/base64
 
 # Update Dependencies
 update:; forge update
